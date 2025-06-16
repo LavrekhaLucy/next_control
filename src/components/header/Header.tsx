@@ -1,20 +1,23 @@
-import {useState} from "react";
-import {useAppDispatch} from "../store/store";
-import {movieActions} from "../../slices/movieSlice";
-import {useNavigate} from "react-router-dom";
+'use client'
 import * as React from "react";
+import {useState} from "react";
+import {movieActions} from "@/slices/movieSlice";
+import {useAppDispatch} from "@/components/hook/useRedux";
+import {useRouter} from "next/navigation";
 
 const Header = () => {
     const dispatch = useAppDispatch();
     const [query, setQuery] = useState("");
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
+    const router = useRouter();
 
     const handleSearch = () => {
         const trimmedQuery = query.trim();
         if (trimmedQuery.length > 0) {
             dispatch(movieActions.setQuery(trimmedQuery));
             dispatch(movieActions.loadMoviesBySearch({ query: query.trim(), page: 1 }));
-            navigate("search/movie");
+            // navigate("search/movie");
+            router.push("/search/movie");
             setQuery("");
         }
     };
@@ -26,8 +29,8 @@ const Header = () => {
 
 
     return (
-        <div className="w-full">
-            <header className="bg-gradient-to-b from-purple-900 to-blue-900 p-4 flex items-center justify-between">
+        <div className="fixed w-screen">
+            <header className="  bg-gradient-to-b from-purple-900 to-blue-900 p-4 flex items-center justify-between">
 
                 <div className="text-xl font-bold text-white"> The Movies App</div>
 

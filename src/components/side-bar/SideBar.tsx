@@ -1,34 +1,26 @@
-import {Outlet} from "react-router-dom";
-import Menu from "../menu/Menu.tsx";
-import {useEffect} from "react";
+'use client'
+import React, {useEffect} from "react";
+import Menu from "@/components/menu/Menu";
 
 const SideBar = () => {
-
     useEffect(() => {
         document.body.style.overflow = 'hidden';
+
         return () => {
             document.body.style.overflow = 'auto';
+
         };
     }, []);
 
+
     return (
-
-        <div className="flex h-screen">
-
-            <aside className="w-64 bg-gradient-to-b from-purple-900 to-blue-900 text-white p-4 flex-shrink-0 ">
-               <Menu/>
-            </aside>
-
-            <main className="flex-1  p-6 overflow-y-auto bg-gray-50">
-                <Outlet />
-
-            </main>
-        </div>
-
-
-
+        <aside className="fixed left-0 top-18 w-64 h-screen bg-gradient-to-b from-purple-900 to-blue-900 text-white p-4 z-50 overflow-y-auto"
+               style={{ height: 'calc(100vh - 5rem)' }}>
+            <Menu/>
+        </aside>
     );
 };
+
 
 
 export default SideBar;

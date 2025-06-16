@@ -1,7 +1,12 @@
-import {useAppSelector} from "../components/store/store.ts";
-import {MovieDetailCard} from "../components/movies-detail-card/MovieDetailCard.tsx";
+// components/search/SearchClient.tsx
+'use client';
 
-export const SearchPage = () => {
+import { useAppSelector } from "@/components/hook/useRedux";
+import { MovieDetailCard } from "@/components/movies-detail-card/MovieDetailCard";
+import PaginationComponent from "@/components/pagination/PaginationComponent";
+import React from "react";
+
+export const SearchClient = () => {
     const searchResults = useAppSelector(state => state.movieStoreSlice.searchResults);
     const hasSearch = searchResults.length > 0;
 
@@ -21,7 +26,7 @@ export const SearchPage = () => {
 
                 </section>
             )}
-
+            <PaginationComponent/>
         </div>
     );
-};
+}

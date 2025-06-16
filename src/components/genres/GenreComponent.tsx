@@ -1,19 +1,29 @@
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../store/store";
-import GenreBadge from "./GenreBadge";
-import {genreActions} from "../../slices/genreSlice.ts";
-import {movieActions} from "../../slices/movieSlice.ts";
-import {MovieDetailCard} from "../movies-detail-card/MovieDetailCard.tsx";
-import * as React from "react";
 
+'use client'
+import { useEffect } from "react";
+
+import GenreBadge from "./GenreBadge";
+import * as React from "react";
+import {useAppDispatch, useAppSelector} from "@/components/hook/useRedux";
+import {genreActions} from "@/slices/genreSlice";
+import {movieActions} from "@/slices/movieSlice";
+import {MovieDetailCard} from "@/components/movies-detail-card/MovieDetailCard";
+import {useRouter, useSearchParams} from "next/navigation";
+import PaginationComponent from "@/components/pagination/PaginationComponent";
 
 export const GenreComponent = () => {
     const dispatch = useAppDispatch();
     const genres = useAppSelector((state) => state.genreStoreSlice.genres);
     const moviesByGenre = useAppSelector((state) => state.movieStoreSlice.moviesByGenre);
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const router = useRouter();
+    const searchParams = useSearchParams()!;
+
+    // Handle null searchParams
+    // if (!searchParams) {
+    //     return <p className="text-center text-gray-500">Loading...</p>;
+    // }
+
     const genreId = Number(searchParams.get("genreId"));
     const page = Number(searchParams.get("page") || "1");
     const sort = searchParams.get("sort") || "popularity.desc";
@@ -29,12 +39,22 @@ export const GenreComponent = () => {
     }, [dispatch, genreId, page, sort]);
 
     const handleGenreClick = (genreId: number) => {
-        setSearchParams({ genreId: genreId.toString(), page: "1", sort });
+        const params = new URLSearchParams(searchParams);
+        params.set("genreId", genreId.toString()); // Fixed: was using 'page' instead of 'genreId'
+        params.set("page", "1"); // Reset to first page when changing genre
+        params.set("sort", sort); // Maintain current sort
+
+        router.push(`?${params.toString()}`);
     };
 
     const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const newSort = e.target.value;
-        setSearchParams({ genreId: genreId.toString(), page: "1", sort: newSort });
+        const params = new URLSearchParams(searchParams);
+        params.set("genreId", genreId.toString());
+        params.set("page", "1"); // Reset to first page when changing sort
+        params.set("sort", newSort);
+
+        router.push(`?${params.toString()}`);
     };
 
     if (!genres || genres.length === 0) {
@@ -42,8 +62,9 @@ export const GenreComponent = () => {
     }
 
     return (
-        <div className="p-4">
-            <div className="flex flex-wrap justify-center gap-4 mb-6">
+        <main className="p-6">
+        {/*<main className="p-4">*/}
+            <div className="flex flex-wrap justify-between gap-3 mb-6">
                 {genres.map((genre) => (
                     <GenreBadge
                         key={genre.id}
@@ -75,7 +96,7 @@ export const GenreComponent = () => {
                     <MovieDetailCard key={movie.id} movie={movie} />
                 ))}
             </div>
-
-        </div>
+            <PaginationComponent/>
+        </main>
     );
 };

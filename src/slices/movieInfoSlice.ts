@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import {getMovie} from "../services/api.service.ts";
-import type {IMovie} from "../models/IMovies/IMovie.ts";
+import {IMovie} from "@/models/IMovies/IMovie";
+import {getMovie} from "@/services/api.service";
+
 
 
 type movieSliceType={

@@ -1,8 +1,8 @@
 import {configureStore} from "@reduxjs/toolkit";
-import {useDispatch, useSelector} from "react-redux";
-import movieSlice from "../../slices/movieSlice.ts";
-import {genreSlice} from "../../slices/genreSlice.ts";
-import movieInfoSlice from "../../slices/movieInfoSlice.ts";
+import movieSlice from "@/slices/movieSlice";
+import movieInfoSlice from "@/slices/movieInfoSlice";
+import {genreSlice} from "@/slices/genreSlice";
+
 
 export const store = configureStore({
     reducer: {
@@ -11,5 +11,8 @@ export const store = configureStore({
         genreStoreSlice:genreSlice.reducer,
     }
 });
-export const useAppSelector =useSelector.withTypes<ReturnType<typeof store.getState>>();
-export const useAppDispatch = useDispatch.withTypes<typeof store.dispatch>();
+
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+

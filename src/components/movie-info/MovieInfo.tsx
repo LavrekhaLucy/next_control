@@ -1,24 +1,30 @@
+'use client'
 import {useEffect} from "react";
-import {useAppDispatch, useAppSelector} from "../store/store.ts";
-import {useParams} from "react-router-dom";
-import {movieInfoActions} from "../../slices/movieInfoSlice.ts";
-import {IMAGE_BASE_URL} from "../user-info/UserInfo.ts";
-import {genreActions} from "../../slices/genreSlice.ts";
+import {genreActions} from "@/slices/genreSlice";
+import {IMAGE_BASE_URL} from "@/components/user-info/UserInfo";
+import {useAppDispatch, useAppSelector} from "@/components/hook/useRedux";
+import Image from "next/image";
+import {IMovie} from "@/models/IMovies/IMovie";
 
 
-export const MovieInfo = () => {
+interface MovieInfoPageProps {
+    movie: IMovie;
+}
+
+export const MovieInfo = ({movie}:MovieInfoPageProps) => {
 
     const dispatch=useAppDispatch();
-    const{id} = useParams();
 
-    const movie = useAppSelector(state => state.movieInfoStoreSlice.movie);
+
+    // const{id} = useParams();
+    // const movie = useAppSelector(state => state.movieInfoStoreSlice.movie);
+
     const genres = useAppSelector(state => state.genreStoreSlice.genres);
 
 
-
-    useEffect(() => {
-        if (id) dispatch(movieInfoActions.loadMovie(Number(id)));
-    }, [dispatch, id]);
+    // useEffect(() => {
+    //     if (id) dispatch(movieInfoActions.loadMovie(Number(id)));
+    // }, [dispatch, id]);
 
     useEffect(() => {
         if (!genres || genres.length === 0) {
@@ -30,6 +36,19 @@ export const MovieInfo = () => {
 
 
 
+    // interface MovieInfoPageProps {
+    //     movie: IMovie;
+    // }
+    //
+    // export const MovieInfo = ({ movie }: MovieInfoPageProps) => {
+    //     const dispatch = useAppDispatch();
+    //     const genres = useAppSelector(state => state.genreStoreSlice.genres);
+    //
+    //     useEffect(() => {
+    //         if (!genres || genres.length === 0) {
+    //             dispatch(genreActions.loadGenres());
+    //         }
+    //     }, [dispatch, genres]);
 
 
     return (
@@ -43,10 +62,12 @@ export const MovieInfo = () => {
                 background: '#f2e7f6',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
             }}>
-                <img
+                <Image
                     src={`${IMAGE_BASE_URL}/w500${movie.poster_path}`}
                     alt={movie.title}
-                    style={{ width: '400px', borderRadius: '1rem' }}
+                    style={{ borderRadius: '1rem' }}
+                    width={400}
+                    height={750}
                 />
 
                 <div>

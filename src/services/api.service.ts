@@ -1,8 +1,8 @@
 import axios from 'axios';
-import {API_KEY, BASE_URL} from "../components/user-info/UserInfo.ts";
-import type {IMoviesResponseModel} from "../models/IMovies/IMoviesResponseModel.ts";
-import type {IMovie} from "../models/IMovies/IMovie.ts";
-import type {IGenresResponseModel} from "../models/IGenres/IGenresResponseModel.ts";
+import {API_KEY, BASE_URL} from "@/components/user-info/UserInfo";
+import {IMoviesResponseModel} from "@/models/IMovies/IMoviesResponseModel";
+import {IMovie} from "@/models/IMovies/IMovie";
+import {IGenresResponseModel} from "@/models/IGenres/IGenresResponseModel";
 
 
 const axiosInstance = axios.create({

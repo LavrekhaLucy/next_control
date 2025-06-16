@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import {getGenres} from "../services/api.service.ts";
-import type {IGenre} from "../models/IGenres/IGenre.ts";
+import {getGenres} from "@/services/api.service";
+import {IGenre} from "@/models/IGenres/IGenre";
 
 type genreSliceType ={
     genres:IGenre[]

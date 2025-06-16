@@ -1,4 +1,5 @@
-import {apiKey, baseUrl, imageUrl} from "../res_constants/info.ts";
+import {apiKey, baseUrl, imageUrl} from "@/components/res_constants/info";
+
 
 export const API_KEY = apiKey;
 export const BASE_URL =  baseUrl;
