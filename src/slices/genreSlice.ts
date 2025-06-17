@@ -12,20 +12,17 @@ const initGenreSliceState:genreSliceType ={genres:[]}
 const loadGenres = createAsyncThunk(
     "loadGenres", async (_, thunkApi) => {
         const genres = await getGenres();
-
         return thunkApi.fulfillWithValue(genres.genres);
 
     }
 );
-
-
 export const genreSlice =createSlice({
     name:'genreSlice',
     initialState: initGenreSliceState,
     reducers:{},
     extraReducers:(builder) => builder
         .addCase(loadGenres.fulfilled,(state, action:PayloadAction<IGenre[]>)=>{
-        state.genres = action.payload;
+           state.genres = action.payload;
     }),
 })
 

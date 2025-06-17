@@ -22,7 +22,7 @@ export const GenreComponent = () => {
 
     useEffect(() => {
         dispatch(genreActions.loadGenres());
-    }, [dispatch]);
+        }, [dispatch]);
 
     useEffect(() => {
         if (genreId) {
