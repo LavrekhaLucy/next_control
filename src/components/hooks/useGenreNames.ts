@@ -1,4 +1,4 @@
-import {useAppSelector} from "@/components/hook/useRedux";
+import {useAppSelector} from "@/components/hooks/useRedux";
 
 
 export const useGenreNames = (genreIds: number[]): string[] => {

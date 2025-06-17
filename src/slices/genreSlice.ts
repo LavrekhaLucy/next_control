@@ -23,10 +23,12 @@ export const genreSlice =createSlice({
     name:'genreSlice',
     initialState: initGenreSliceState,
     reducers:{},
-    extraReducers:builder => builder.addCase(loadGenres.fulfilled,(state, action:PayloadAction<IGenre[]>)=>{
+    extraReducers:(builder) => builder
+        .addCase(loadGenres.fulfilled,(state, action:PayloadAction<IGenre[]>)=>{
         state.genres = action.payload;
     }),
 })
 
 
 export const genreActions = {...genreSlice.actions, loadGenres};
+

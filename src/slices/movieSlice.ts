@@ -53,7 +53,7 @@ const movieSlice = createSlice({
     reducers:{setQuery: (state, action: PayloadAction<string>) => {
             state.searchQuery = action.payload;
         }},
-    extraReducers:builder => builder
+    extraReducers:(builder) => builder
         .addCase(loadMovies.fulfilled, (state, action: PayloadAction<IMoviesResponseModel>) => {
             state.movies = action.payload.results;
             state.moviesPage = action.payload;

@@ -23,7 +23,7 @@ const movieInfoSlice = createSlice({
     name:'movieSlice',
     initialState:initMovieSliceState,
     reducers:{},
-    extraReducers:builder => builder
+    extraReducers:(builder) => builder
         .addCase(loadMovie.fulfilled,(state, action:PayloadAction<IMovie>)=>{
         state.movie = action.payload;
     }),

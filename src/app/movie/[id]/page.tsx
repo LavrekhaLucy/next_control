@@ -6,6 +6,7 @@ interface PageProps {
 }
 
 export default async function MovieDetailsPage({params}: PageProps) {
+
     const movie = await getMovie(Number(params.id));
 
     if (!movie) {

@@ -1,15 +1,12 @@
-
 'use client'
-import { useEffect } from "react";
-
-import GenreBadge from "./GenreBadge";
 import * as React from "react";
-import {useAppDispatch, useAppSelector} from "@/components/hook/useRedux";
+import {useEffect} from "react";
+import GenreBadge from "./GenreBadge";
+import {useAppDispatch, useAppSelector} from "@/components/hooks/useRedux";
 import {genreActions} from "@/slices/genreSlice";
 import {movieActions} from "@/slices/movieSlice";
 import {MovieDetailCard} from "@/components/movies-detail-card/MovieDetailCard";
 import {useRouter, useSearchParams} from "next/navigation";
-import PaginationComponent from "@/components/pagination/PaginationComponent";
 
 export const GenreComponent = () => {
     const dispatch = useAppDispatch();
@@ -18,11 +15,6 @@ export const GenreComponent = () => {
 
     const router = useRouter();
     const searchParams = useSearchParams()!;
-
-    // Handle null searchParams
-    // if (!searchParams) {
-    //     return <p className="text-center text-gray-500">Loading...</p>;
-    // }
 
     const genreId = Number(searchParams.get("genreId"));
     const page = Number(searchParams.get("page") || "1");
@@ -40,9 +32,9 @@ export const GenreComponent = () => {
 
     const handleGenreClick = (genreId: number) => {
         const params = new URLSearchParams(searchParams);
-        params.set("genreId", genreId.toString()); // Fixed: was using 'page' instead of 'genreId'
-        params.set("page", "1"); // Reset to first page when changing genre
-        params.set("sort", sort); // Maintain current sort
+        params.set("genreId", genreId.toString());
+        params.set("page", "1");
+        params.set("sort", sort);
 
         router.push(`?${params.toString()}`);
     };
@@ -51,7 +43,7 @@ export const GenreComponent = () => {
         const newSort = e.target.value;
         const params = new URLSearchParams(searchParams);
         params.set("genreId", genreId.toString());
-        params.set("page", "1"); // Reset to first page when changing sort
+        params.set("page", "1");
         params.set("sort", newSort);
 
         router.push(`?${params.toString()}`);
@@ -62,17 +54,14 @@ export const GenreComponent = () => {
     }
 
     return (
-        <main className="p-6">
-        {/*<main className="p-4">*/}
-            <div className="flex flex-wrap justify-between gap-3 mb-6">
+        <main className="p-6 ml-18">
+            <div className="flex flex-wrap justify-between gap-4 mt-8 mb-6">
                 {genres.map((genre) => (
                     <GenreBadge
                         key={genre.id}
                         id={genre.id}
                         name={genre.name}
-                        onClick={() => handleGenreClick(genre.id)}
-                    />
-                ))}
+                        onClick={() => handleGenreClick(genre.id)}/>))}
             </div>
 
             <div className="flex justify-end mb-4">
@@ -96,7 +85,7 @@ export const GenreComponent = () => {
                     <MovieDetailCard key={movie.id} movie={movie} />
                 ))}
             </div>
-            <PaginationComponent/>
+
         </main>
     );
 };

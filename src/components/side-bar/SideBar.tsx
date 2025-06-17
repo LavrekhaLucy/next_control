@@ -1,17 +1,8 @@
 'use client'
-import React, {useEffect} from "react";
+import React from "react";
 import Menu from "@/components/menu/Menu";
 
 const SideBar = () => {
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-
-        return () => {
-            document.body.style.overflow = 'auto';
-
-        };
-    }, []);
-
 
     return (
         <aside className="fixed left-0 top-18 w-64 h-screen bg-gradient-to-b from-purple-900 to-blue-900 text-white p-4 z-50 overflow-y-auto"
@@ -20,7 +11,5 @@ const SideBar = () => {
         </aside>
     );
 };
-
-
 
 export default SideBar;
