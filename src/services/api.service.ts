@@ -5,7 +5,7 @@ import {IMovie} from "@/models/IMovies/IMovie";
 import {IGenresResponseModel} from "@/models/IGenres/IGenresResponseModel";
 
 
-const axiosInstance = axios.create({
+ const axiosInstance = axios.create({
     baseURL: BASE_URL,
     params: {api_key: API_KEY},
     headers: {'Content-Type': 'application/json'},

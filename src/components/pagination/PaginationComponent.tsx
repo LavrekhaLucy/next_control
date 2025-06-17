@@ -1,43 +1,72 @@
 'use client'
-import {useAppDispatch, useAppSelector} from "@/components/hooks/useRedux";
-import {movieActions} from "@/slices/movieSlice";
-import {useSearchParams, useRouter} from "next/navigation";
+import React, { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from "@/components/hooks/useRedux";
+import { movieActions } from "@/slices/movieSlice";
+import { useSearchParams, useRouter } from "next/navigation";
 
-const PaginationComponent = () => {
+interface PaginationComponentProps {
+    initialPage: number;
+    initialGenreId?: number;
+    initialSort?: string;
+}
+
+
+const PaginationComponent = ({ initialPage, initialGenreId, initialSort }: PaginationComponentProps) => {
     const dispatch = useAppDispatch();
     const searchParams = useSearchParams();
     const router = useRouter();
+
+    const [currentPage, setCurrentPage] = useState(initialPage);
+    const [hydrated, setHydrated] = useState(false);
 
     const moviesPage = useAppSelector(state => state.movieStoreSlice.moviesPage);
     const searchQuery = useAppSelector(state => state.movieStoreSlice.searchQuery);
     const totalSearchPages = useAppSelector(state => state.movieStoreSlice.totalSearchPages);
 
-    if (!searchParams) {
-        return null;
-    }
-    const genreId = searchParams.get("genre");
-    const currentPage = Number(searchParams.get("page") || "1");
+    useEffect(() => {
+        setHydrated(true);
+    }, []);
+
+    useEffect(() => {
+        if (!hydrated) return;
+        const pageFromUrl = Number(searchParams.get("page") || "1");
+        if (pageFromUrl !== currentPage) {
+            setCurrentPage(pageFromUrl);
+        }
+    }, [searchParams, hydrated, currentPage]);
+
+    if (!hydrated) return null;
+
+
+    const currentGenreId = searchParams.get("genre") ? Number(searchParams.get("genre")) : initialGenreId;
 
     const totalPages = searchQuery
         ? totalSearchPages || 1
         : moviesPage?.total_pages || 1;
 
     const goToPage = (page: number) => {
-        const params = new URLSearchParams(searchParams);
+        setCurrentPage(page);
+
+        const params = new URLSearchParams(searchParams.toString());
         params.set("page", page.toString());
         router.push(`?${params.toString()}`);
 
         if (searchQuery) {
             dispatch(movieActions.loadMoviesBySearch({
                 query: searchQuery,
-                page}));
-        } else if (genreId) {
+                page
+            }));
+        } else if (currentGenreId !== undefined && !isNaN(currentGenreId)) {
+
             dispatch(movieActions.loadMoviesByGenre({
-                genreId: Number(genreId),
+                genreId: currentGenreId, // Тепер це буде 'number'
                 page,
-                sort: "popularity.desc"}));
+                sort: initialSort || "popularity.desc"
+            }));
         } else {
-            dispatch(movieActions.loadMovies(page.toString()));}
+
+            dispatch(movieActions.loadMovies(page.toString()));
+        }
     };
 
     const createPageNumbers = () => {
@@ -51,8 +80,7 @@ const PaginationComponent = () => {
             if (currentPage > 4) pages.push("...");
 
             const start = Math.max(2, currentPage - 2);
-            const end = Math.min(totalPages - 1, currentPage + 2);
-            for (let i = start; i <= end; i++) pages.push(i);
+            for (let i = start; i <= Math.min(totalPages - 1, currentPage + 2); i++) pages.push(i);
 
             if (currentPage < totalPages - 3) pages.push("...");
 
@@ -76,7 +104,7 @@ const PaginationComponent = () => {
             {visiblePages.map((page, index) =>
                 typeof page === "number" ? (
                     <button
-                        key={index}
+                        key={page}
                         onClick={() => goToPage(page)}
                         className={`px-3 py-1 rounded border ${
                             page === currentPage
@@ -85,7 +113,7 @@ const PaginationComponent = () => {
                         {page}
                     </button>
                 ) : (
-                    <span key={index} className="px-2 text-gray-400 select-none">...</span>
+                    <span key={`ellipsis-${index}`} className="px-2 text-gray-400 select-none">...</span>
                 )
             )}
 

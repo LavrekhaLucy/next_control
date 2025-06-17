@@ -30,7 +30,6 @@ const loadMovies = createAsyncThunk(
     }
 );
 
-
  const loadMoviesByGenre = createAsyncThunk(
     "loadMoviesByGenre",
     async ({genreId,page,sort}: { genreId: number, page: number, sort: string },  thunkAPI) => {
@@ -45,7 +44,6 @@ const loadMovies = createAsyncThunk(
          return thunkAPI.fulfillWithValue(results);
      }
 );
-
 
 const movieSlice = createSlice({
     name:'movieSlice',
